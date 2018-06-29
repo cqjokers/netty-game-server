@@ -9,6 +9,8 @@ import com.vg.game.core.net.codec.BinMessage;
 import com.vg.game.core.net.codec.BinMsgCodec;
 
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 
 /**
@@ -46,7 +48,12 @@ public class ClientHandlerDispatcher extends MessageHandlerDispatcher {
 
 	@Override
 	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-		//处于空闲状态,需要对心跳进行处理
+		if(evt instanceof IdleStateEvent) {//空闲状态
+			IdleStateEvent event = (IdleStateEvent) evt;
+			if(event.state() == IdleState.ALL_IDLE) {
+				//需要进行心跳相关处理
+			}
+		}
 	}
 
 	@Override

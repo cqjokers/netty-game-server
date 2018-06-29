@@ -22,6 +22,8 @@ public class ServiceInitalizer {
 	
 	private String name;
 	
+	private int idleTime;
+	
 	private LogLevel loglv = LogLevel.ERROR;
 	
 	public ServiceInitalizer(String prop) throws Exception {
@@ -32,6 +34,7 @@ public class ServiceInitalizer {
 		ip = properties.getProperty("server.ip");
 		name = properties.getProperty("server.name");
 		port = Integer.valueOf(properties.getProperty("server.port"));
+		idleTime = Integer.valueOf(properties.getProperty("server.idleTime"));
 		String netlog = properties.getProperty("server.netlog");
 		if (netlog.equals("debug")) {
 			loglv = LogLevel.DEBUG;
@@ -59,5 +62,10 @@ public class ServiceInitalizer {
 	public LogLevel getLogLevel() {
 		return loglv;
 	}
+
+	public int getIdleTime() {
+		return idleTime;
+	}
+	
 }
 

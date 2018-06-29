@@ -2,6 +2,8 @@ package com.vg.game.client;
 
 import java.util.concurrent.ExecutorService;
 
+import com.vg.game.service.ServiceMgr;
+
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -16,6 +18,8 @@ public class ConnClient {
 	private ChannelHandlerContext ctx;
 	
 	private ExecutorService exe;
+	
+	public static final int IDLE_TIME = ServiceMgr.getInstance().getInitalizer().getIdleTime();
 	
 	public ConnClient(ChannelHandlerContext ctx, ExecutorService exe){
 		this.ctx = ctx;
