@@ -1,8 +1,14 @@
 package com.vg.game.service;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteOrder;
+import java.util.Properties;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbcp.BasicDataSourceFactory;
 
 import com.vg.game.core.concurrent.HFExecutorGroup;
 import com.vg.game.core.hfboot.ServerHFBoot;
@@ -20,7 +26,7 @@ import io.netty.handler.logging.LoggingHandler;
 * <p>Description: 服务管理器</p>
 * <p>Copyright: Copyright (c) 2018</p>
 * @author moyang
-* @date 2018年6月27日
+* @date 2018年6月28日
  */
 public class ServiceMgr {
 
@@ -36,7 +42,9 @@ public class ServiceMgr {
 	
 	protected long currentTime;
 	
-	private static volatile ServiceMgr instance;
+	private DataSource dataSource;
+	
+	private static ServiceMgr instance;
 
 	public static ServiceMgr getInstance() {
 		return instance;
@@ -90,6 +98,21 @@ public class ServiceMgr {
 		ModuleInitalizer.init(ModuleMgr.getInstance());
 		ModuleMgr.getInstance().openAllModel();
 		runNetService();
+	}
+	
+	private void runDbService() {
+		String dbcpProp=initalizer.getDbcpProp();
+		if (dbcpProp != null){
+			try{
+				Properties prop = new Properties();
+				FileInputStream fis = new FileInputStream(dbcpProp);
+				prop.load(fis);
+				BasicDataSourceFactory factory = new BasicDataSourceFactory();
+				dataSource = factory.createDataSource(prop);
+			}catch (Exception e){
+				Runtime.getRuntime().exit(0);
+			}
+		}
 	}
 	
 	private void runNetService() {
@@ -146,4 +169,9 @@ public class ServiceMgr {
 	public ServiceInitalizer getInitalizer() {
 		return initalizer;
 	}
+
+	public DataSource getDataSource() {
+		return dataSource;
+	}
+	
 }

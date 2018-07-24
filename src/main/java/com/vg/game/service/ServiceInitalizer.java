@@ -24,9 +24,11 @@ public class ServiceInitalizer {
 	
 	private int idleTime;
 	
+	private String dbcpProp;
+	
 	private LogLevel loglv = LogLevel.ERROR;
 	
-	public ServiceInitalizer(String prop) throws Exception {
+	public ServiceInitalizer(String prop,String dbcpProp) throws Exception {
 		FileInputStream fis = new FileInputStream(prop);
 		properties = new Properties();
 		properties.load(fis);
@@ -45,6 +47,7 @@ public class ServiceInitalizer {
 		} else if (netlog.equals("error")) {
 			loglv = LogLevel.ERROR;
 		}
+		this.dbcpProp = dbcpProp;
 	}
 
 	public String getIp() {
@@ -66,6 +69,9 @@ public class ServiceInitalizer {
 	public int getIdleTime() {
 		return idleTime;
 	}
-	
+
+	public String getDbcpProp() {
+		return dbcpProp;
+	}
 }
 
